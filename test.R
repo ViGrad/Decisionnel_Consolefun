@@ -12,7 +12,7 @@ ui <- navbarPage("Données Console Fun",
                  plotOutput("histNewUsers")),
           column(8, align="center",
                  # Buton de mise à jour de la liste rv
-                 verbatimTextOutput(outputId = "summaryNewUsefs"))
+                 verbatimTextOutput(outputId = "summaryNewUsers"))
           )
       ),
       tabPanel("Histogramme pages vues par jour",  fluidRow(
@@ -42,13 +42,13 @@ ui <- navbarPage("Données Console Fun",
   # Commandes à exécuter
   server <- function(input, output){
     data <- read.csv("./output/Nouveaux utilisateurs.csv", header = TRUE)
-    dataViews <- read.csv("./output/Pages-vues-par-jour.csv", header = TRUE)
+    dataViews <- read.csv("./output/Pages vues par jour.csv", header = TRUE)
     dataActives <- read.csv("./output/utilisateurs actifs.csv", header = TRUE)
     
     # Récupération des valeurs fecondite
     nouveaux <- data$nouveaux
     vues <- dataViews$vues
-    actifs <- dataViews$actifs 
+    actifs <- dataActives$actifs 
     
     
     # On initialise liste de valeurs réactives
