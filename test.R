@@ -39,11 +39,11 @@ ui <- navbarPage("Données Console Fun",
         column(8, align="center",
                # Buton de mise à jour de la liste rv
                verbatimTextOutput(outputId = "summarySeenPage"))
+        )
       )
     )
   ),
   tabPanel("Analyse de ...", verbatimTextOutput(outputId = "summ"))
-)
 )
 
 
