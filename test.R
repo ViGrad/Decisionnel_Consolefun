@@ -1,16 +1,28 @@
 library(shiny)
+library(markdown)
 
 # Contenu de l'interface
-ui <- fluidPage(
-  titlePanel("Variable qualitative"),
-    tabsetPanel(
-      tabPanel("Histogramme nouveaux utilisateurs",  fluidRow(
-        column(4, align="center",
-               # Buton de mise à jour de la liste rv
-               plotOutput("hist")),
-        column(8, align="center",
-               # Buton de mise à jour de la liste rv
-               verbatimTextOutput(outputId = "summary"))
+ui <- 
+  navbarPage("Données Console Fun",
+    tabPanel("Introduction", includeMarkdown("readme.md")),
+    tabPanel("Présentation des données",
+      tabsetPanel(
+        tabPanel("Histogramme nouveaux utilisateurs",  fluidRow(
+          column(4, align="center",
+                 # Buton de mise à jour de la liste rv
+                 plotOutput("hist")),
+          column(8, align="center",
+                 # Buton de mise à jour de la liste rv
+                 verbatimTextOutput(outputId = "summary"))
+          )
+        ),
+        tabPanel("Histogramme utilisateurs par jour",  fluidRow(
+          column(4, align="center",
+                 # Buton de mise à jour de la liste rv
+                 plotOutput("histUsers")),
+          column(8, align="center",
+                 # Buton de mise à jour de la liste rv
+                 verbatimTextOutput(outputId = "summaryUsers"))
         )
       ),
       tabPanel("Histogramme utilisateurs par jour",  fluidRow(
@@ -30,8 +42,10 @@ ui <- fluidPage(
                verbatimTextOutput(outputId = "summarySeenPage"))
       )
     )
-  )
+  ),
+  tabPanel("Analyse de ...", verbatimTextOutput(outputId = "summ"))
 )
+
 
 
   # Commandes à exécuter
