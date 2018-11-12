@@ -2,8 +2,7 @@ library(shiny)
 library(markdown)
 
 # Contenu de l'interface
-ui <- 
-  navbarPage("Données Console Fun",
+ui <- navbarPage("Données Console Fun",
     tabPanel("Introduction", includeMarkdown("readme.md")),
     tabPanel("Présentation des données",
       tabsetPanel(
@@ -45,14 +44,14 @@ ui <-
   ),
   tabPanel("Analyse de ...", verbatimTextOutput(outputId = "summ"))
 )
-
+)
 
 
   # Commandes à exécuter
   server <- function(input, output){
-    data <- read.csv("./output Nouveaux utilisateurs.csv", header = TRUE)
-    data2 <- read.csv("./output utilisateurs actifs.csv", header = TRUE)
-    data3 <- read.csv("./output Pages vues par jour.csv", header = TRUE)
+    data <- read.csv("./output/Nouveaux utilisateurs.csv", header = TRUE)
+    data2 <- read.csv("./output/utilisateurs actifs.csv", header = TRUE)
+    data3 <- read.csv("./output/Pages vues par jour.csv", header = TRUE)
     
     # Récupération des valeurs fecondite
     nouveaux <- reactive({
