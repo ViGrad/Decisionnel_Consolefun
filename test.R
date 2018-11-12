@@ -20,6 +20,14 @@ ui <- fluidPage(
         column(8, align="center",
                # Buton de mise à jour de la liste rv
                verbatimTextOutput(outputId = "summaryUsers"))
+      )),
+      tabPanel("Pages vue par jour",  fluidRow(
+        column(4, align="center",
+               # Buton de mise à jour de la liste rv
+               plotOutput("histSeenPage")),
+        column(8, align="center",
+               # Buton de mise à jour de la liste rv
+               verbatimTextOutput(outputId = "summarySeenPage"))
       )
     )
   )
@@ -30,6 +38,7 @@ ui <- fluidPage(
   server <- function(input, output){
     data <- read.csv("./output Nouveaux utilisateurs.csv", header = TRUE)
     data2 <- read.csv("./output utilisateurs actifs.csv", header = TRUE)
+    data3 <- read.csv("./output Pages vues par jour.csv", header = TRUE)
     
     # Récupération des valeurs fecondite
     nouveaux <- reactive({
@@ -41,6 +50,12 @@ ui <- fluidPage(
       if(!"actifs" %in% colnames(data2)) return(NULL)
       as.numeric((unlist(data2)))
     })
+    
+    seenPage <- reactive({
+      if(!"actifs" %in% colnames(data3)) return(NULL)
+      as.numeric((unlist(data3)))
+    })
+    
     
     # On initialise liste de valeurs réactives
     # ----
@@ -58,8 +73,14 @@ ui <- fluidPage(
       hist(users(), freq = rv$hist_isFreq)
     })
     
+    output$histSeenPage <- renderPlot({
+      hist(seenPage(), freq = rv$hist_isFreq)
+    })
+    
+    
     output$summary <- renderPrint({ t(summary(data)) })
     output$summaryUsers <- renderPrint({ t(summary(data2)) })
+    output$summarySeenPage <- renderPrint({ t(summary(data3)) })
   }
   # Association interface & commandes
   shinyApp(ui = ui, server = server)
