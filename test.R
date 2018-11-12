@@ -9,36 +9,28 @@ ui <- navbarPage("Données Console Fun",
         tabPanel("Histogramme nouveaux utilisateurs",  fluidRow(
           column(4, align="center",
                  # Buton de mise à jour de la liste rv
-                 plotOutput("hist")),
+                 plotOutput("histNewUsers")),
           column(8, align="center",
                  # Buton de mise à jour de la liste rv
-                 verbatimTextOutput(outputId = "summary"))
+                 verbatimTextOutput(outputId = "summaryNewUsefs"))
           )
-        ),
-        tabPanel("Histogramme utilisateurs par jour",  fluidRow(
-          column(4, align="center",
-                 # Buton de mise à jour de la liste rv
-                 plotOutput("histUsers")),
-          column(8, align="center",
-                 # Buton de mise à jour de la liste rv
-                 verbatimTextOutput(outputId = "summaryUsers"))
+      ),
+      tabPanel("Histogramme pages vues par jour",  fluidRow(
+        column(4, align="center",
+               # Buton de mise à jour de la liste rv
+               plotOutput("histViews")),
+        column(8, align="center",
+               # Buton de mise à jour de la liste rv
+               verbatimTextOutput(outputId = "summaryViews"))
         )
       ),
-      tabPanel("Histogramme utilisateurs par jour",  fluidRow(
+      tabPanel("Histogramme pages vues par jour",  fluidRow(
         column(4, align="center",
                # Buton de mise à jour de la liste rv
-               plotOutput("histUsers")),
+               plotOutput("histActives")),
         column(8, align="center",
                # Buton de mise à jour de la liste rv
-               verbatimTextOutput(outputId = "summaryUsers"))
-      )),
-      tabPanel("Pages vue par jour",  fluidRow(
-        column(4, align="center",
-               # Buton de mise à jour de la liste rv
-               plotOutput("histSeenPage")),
-        column(8, align="center",
-               # Buton de mise à jour de la liste rv
-               verbatimTextOutput(outputId = "summarySeenPage"))
+               verbatimTextOutput(outputId = "summaryActives"))
         )
       )
     )
@@ -50,24 +42,13 @@ ui <- navbarPage("Données Console Fun",
   # Commandes à exécuter
   server <- function(input, output){
     data <- read.csv("./output/Nouveaux utilisateurs.csv", header = TRUE)
-    data2 <- read.csv("./output/utilisateurs actifs.csv", header = TRUE)
-    data3 <- read.csv("./output/Pages vues par jour.csv", header = TRUE)
+    dataViews <- read.csv("./output/Pages-vues-par-jour.csv", header = TRUE)
+    dataActives <- read.csv("./output/utilisateurs actifs.csv", header = TRUE)
     
     # Récupération des valeurs fecondite
-    nouveaux <- reactive({
-      if(!"nouveaux" %in% colnames(data)) return(NULL)
-      data$nouveaux
-    })
-    
-    users <- reactive({
-      if(!"actifs" %in% colnames(data2)) return(NULL)
-      as.numeric((unlist(data2)))
-    })
-    
-    seenPage <- reactive({
-      if(!"actifs" %in% colnames(data3)) return(NULL)
-      as.numeric((unlist(data3)))
-    })
+    nouveaux <- data$nouveaux
+    vues <- dataViews$vues
+    actifs <- dataViews$actifs 
     
     
     # On initialise liste de valeurs réactives
@@ -78,22 +59,21 @@ ui <- navbarPage("Données Console Fun",
   
     # Histogramme
     # ----
-    output$hist <- renderPlot({
-      hist(nouveaux(), freq = rv$hist_isFreq)
+    output$histNewUsers <- renderPlot({
+      hist(nouveaux, freq = rv$hist_isFreq)
     })
+    output$summaryNewUsers <- renderPrint({ t(summary(data)) })
     
-    output$histUsers <- renderPlot({
-      hist(users(), freq = rv$hist_isFreq)
+    
+    output$histViews <- renderPlot({
+      hist(vues, freq = rv$hist_isFreq)
     })
+    output$summaryViews <- renderPrint({ t(summary(dataViews)) })
     
-    output$histSeenPage <- renderPlot({
-      hist(seenPage(), freq = rv$hist_isFreq)
+    output$histActives <- renderPlot({
+      hist(actifs, freq = rv$hist_isFreq)
     })
-    
-    
-    output$summary <- renderPrint({ t(summary(data)) })
-    output$summaryUsers <- renderPrint({ t(summary(data2)) })
-    output$summarySeenPage <- renderPrint({ t(summary(data3)) })
+    output$summaryActives <- renderPrint({ t(summary(dataActives)) })
   }
   # Association interface & commandes
   shinyApp(ui = ui, server = server)
