@@ -1,37 +1,42 @@
+options(Encoding="UTF-8")
 library(shiny)
 library(markdown)
 
 # Contenu de l'interface
-ui <- navbarPage("Données Console Fun",
+ui <- navbarPage("Analyse Console Fun",
     tabPanel("Introduction", includeMarkdown("readme.md")),
-    tabPanel("Présentation des données",
+    tabPanel("Analyse du traffic",
       tabsetPanel(
-        tabPanel("Histogramme nouveaux utilisateurs",  fluidRow(
-          column(4, align="center",
-                 # Buton de mise à jour de la liste rv
-                 plotOutput("histNewUsers")),
-          column(8, align="center",
-                 # Buton de mise à jour de la liste rv
-                 verbatimTextOutput(outputId = "summaryNewUsers"))
-          )
+        tabPanel("Nouveaux utilisateurs",  
+          fluidRow(
+            column(4, align="center",
+                   # Buton de mise à jour de la liste rv
+                   plotOutput("histNewUsers")),
+            column(8, align="center",
+                   # Buton de mise à jour de la liste rv
+                   plotOutput(outputId = "boiteMoustachesNewUsers"))
+          ),
+          verbatimTextOutput(outputId = "summaryNewUsers")
       ),
-      tabPanel("Histogramme pages vues par jour",  fluidRow(
+      tabPanel("Pages vues",  fluidRow(
         column(4, align="center",
                # Buton de mise à jour de la liste rv
                plotOutput("histViews")),
         column(8, align="center",
                # Buton de mise à jour de la liste rv
-               verbatimTextOutput(outputId = "summaryViews"))
-        )
+               plotOutput(outputId = "boiteMoustachesViews"))
+        ),
+        verbatimTextOutput(outputId = "summaryViews")
       ),
-      tabPanel("Histogramme pages vues par jour",  fluidRow(
+      tabPanel("Utilisateurs actifs",  fluidRow(
         column(4, align="center",
                # Buton de mise à jour de la liste rv
-               plotOutput("histActives")),
+               plotOutput("histActiveUsers")),
         column(8, align="center",
                # Buton de mise à jour de la liste rv
-               verbatimTextOutput(outputId = "summaryActives"))
-        )
+               plotOutput(outputId = "boiteMoustachesActiveUsers"))
+        ),
+        verbatimTextOutput(outputId = "summaryActiveUsers")
       )
     )
   ),
@@ -43,12 +48,12 @@ ui <- navbarPage("Données Console Fun",
   server <- function(input, output){
     data <- read.csv("./output/Nouveaux utilisateurs.csv", header = TRUE)
     dataViews <- read.csv("./output/Pages vues par jour.csv", header = TRUE)
-    dataActives <- read.csv("./output/utilisateurs actifs.csv", header = TRUE)
+    dataActiveUsers <- read.csv("./output/utilisateurs actifs.csv", header = TRUE)
     
     # Récupération des valeurs fecondite
     nouveaux <- data$nouveaux
     vues <- dataViews$vues
-    actifs <- dataActives$actifs 
+    actifs <- dataActiveUsers$actifs 
     
     
     # On initialise liste de valeurs réactives
@@ -57,23 +62,47 @@ ui <- navbarPage("Données Console Fun",
                          hist_yLabel = "Effectifs", 
                          hist_col = "blue")
   
-    # Histogramme
-    # ----
+    # ---- Nouveaux utilisateurs
     output$histNewUsers <- renderPlot({
-      hist(nouveaux, freq = rv$hist_isFreq)
+      hist(nouveaux, freq = rv$hist_isFreq, main = "Histogramme")
     })
     output$summaryNewUsers <- renderPrint({ t(summary(data)) })
+    output$boiteMoustachesNewUsers <- renderPlot({
+      # Boîte à moustaches
+      boxplot( data, col = grey(0.8), 
+               main = "Nouveaux utilisateurs par jour",
+               ylab = "Utilisateurs", las = 1)
+      # Affichage complémentaires en Y des différents âges
+      rug(data[,1], side = 2)
+    })
     
-    
+    # ---- Vues
     output$histViews <- renderPlot({
-      hist(vues, freq = rv$hist_isFreq)
+      hist(vues, freq = rv$hist_isFreq, main = "Histogramme")
     })
     output$summaryViews <- renderPrint({ t(summary(dataViews)) })
-    
-    output$histActives <- renderPlot({
-      hist(actifs, freq = rv$hist_isFreq)
+    output$boiteMoustachesViews <- renderPlot({
+      # Boîte à moustaches
+      boxplot( dataViews, col = grey(0.8), 
+               main = "Nombre de vues par jour",
+               ylab = "Vues", las = 1)
+      # Affichage complémentaires en Y des différents âges
+      rug(dataViews[,1], side = 2)
     })
-    output$summaryActives <- renderPrint({ t(summary(dataActives)) })
+    
+    # ---- Utilisateurs actifs
+    output$histActiveUsers <- renderPlot({
+      hist(actifs, freq = rv$hist_isFreq, main = "Histogramme")
+    })
+    output$summaryActiveUsers <- renderPrint({ t(summary(dataActiveUsers)) })
+    output$boiteMoustachesActiveUsers <- renderPlot({
+      # Boîte à moustaches
+      boxplot( dataActiveUsers, col = grey(0.8), 
+               main = "Utilisateurs actifs par jour",
+               ylab = "Utilisateurs", las = 1)
+      # Affichage complémentaires en Y des différents âges
+      rug(dataActiveUsers[,1], side = 2)
+    })
   }
   # Association interface & commandes
   shinyApp(ui = ui, server = server)
