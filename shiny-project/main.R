@@ -1,9 +1,9 @@
 options(Encoding="UTF-8")
 library(shiny)
+eval(parse("src/introduction.R", encoding="UTF-8"))
+eval(parse("src/trafficAnalysis.R", encoding="UTF-8"))
+eval(parse("src/quantitative.R", encoding="UTF-8"))
 
-source("src/introduction.R")
-source("src/trafficAnalysis.R")
-source("src/quantitative.R")
 
 # 2. Variable quantitative
 # ---- Nuage de points
@@ -16,7 +16,7 @@ ui <- navbarPage("Analyse Console Fun",
   server <- function(input, output){
     # 1. Introduction
     introduction$server(input, output)
-    # 2. Presentation des données
+    # 2. Presentation des donn?es
     trafficAnalysis$server(input, output)
     # 3. Analyse quantitative
     quantitative$server(input, output)
