@@ -86,8 +86,8 @@ getQuantitative <- function () {
                     )
   
   quantitative$server <- function(input, output) {
-    dataSet <- read.csv("./inputs/secteursActivite.csv", header = TRUE)
-    dataHelp <- read.csv("./inputs/exempleNuages.csv", header = FALSE)
+    dataSet <-  fread("./inputs/ensemble bd analytics.csv", header=TRUE)
+    dataHelp <- fread("./inputs/ensemble bd analytics.csv", header=TRUE)
     
     reactive({rnorm(input$num)})
     
