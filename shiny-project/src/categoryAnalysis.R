@@ -39,45 +39,47 @@ categoryAnalysis$server <- function(input, output){
   # ----
   # Unidimensionnel
   output$barplotUni <- renderPlot({
-    # Diagramme en barres de la variable 'Level' avec ggplot
-    ggplot(data, aes(x = Level)) + geom_bar()
+    # Diagramme en barres de la variable 'categorie' avec ggplot
+    ggplot(data, aes(x = categorie)) + geom_bar()
   })
   output$barplotOrderedUni <- renderPlot({
-    # Diagramme en barres de la variable 'Level' avec ggplot
+    # Diagramme en barres de la variable 'categorie' avec ggplot
     tmp.data <- data
-    # On ordonne dans l'ordre naturel les différentes modalités de 'Level'
+    # On ordonne dans l'ordre naturel les différentes modalités de 'categorie'
     # freshman: 1, sophomore: 2, junior: 3, senior: 4, special: 5, graduate: 6
     tmp.order <- rep(0, nrow(data))
-    tmp.order[with(tmp.data, Level == "freshman")] = 1
-    tmp.order[with(tmp.data, Level == "sophomore")] = 2
-    tmp.order[with(tmp.data, Level == "junior")] = 3
-    tmp.order[with(tmp.data, Level == "senior")] = 4
-    tmp.order[with(tmp.data, Level == "special")] = 5
-    tmp.order[with(tmp.data, Level == "graduate")] = 6
-    tmp.data$Level <- with(tmp.data, reorder(Level, tmp.order))
+    tmp.order[with(tmp.data, categorie == "ps4")] = 1
+    tmp.order[with(tmp.data, categorie == "xboxone")] = 2
+    tmp.order[with(tmp.data, categorie == "switch")] = 3
+    tmp.order[with(tmp.data, categorie == "pc")] = 4
+    tmp.order[with(tmp.data, categorie == "iphone")] = 5
+    tmp.order[with(tmp.data, categorie == "android")] = 6
+    tmp.order[with(tmp.data, categorie == "multi")] = 4
+    
+    tmp.data$categorie <- with(tmp.data, reorder(categorie, tmp.order))
     rm(tmp.order)
-    # Diagramme en barres de la variable 'Level' avec ggplot
-    ggplot(tmp.data, aes(x = Level)) + geom_bar()
+    # Diagramme en barres de la variable 'categorie' avec ggplot
+    ggplot(tmp.data, aes(x = categorie)) + geom_bar()
   })
   
   # Bidimensionnel
   output$barplotBi <- renderPlot({
-    # Diagramme en barres entre les variables 'Level' et 'Sex'
-    ggplot(data, aes(x = Level, fill = Sex)) + geom_bar()
+    # Diagramme en barres entre les variables 'categorie' et 'Sessions'
+    ggplot(data, aes(x = categorie, fill = Sessions)) + geom_bar()
   })
   output$barplotProfils <- renderPlot({
-    # Diagramme de profils entre les variables 'Level' et 'Sex'
-    ggplot(data, aes(x = Level, fill = Sex)) + geom_bar(position = "fill")
+    # Diagramme de profils entre les variables 'categorie' et 'Sessions'
+    ggplot(data, aes(x = categorie, fill = Sessions)) + geom_bar(position = "fill")
   })
   output$barplotDodgeBi <- renderPlot({
-    # Diagramme de profils entre les variables 'Level' et 'Sex'
-    ggplot(data, aes(x = Level, fill = Sex)) + geom_bar(position = "dodge")
+    # Diagramme de profils entre les variables 'categorie' et 'Sessions'
+    ggplot(data, aes(x = categorie, fill = Sessions)) + geom_bar(position = "dodge")
   })
   
-  # Table de contingence entre 'Sex' et 'Level'
+  # Table de contingence entre 'Sessions' et 'categorie'
   # ----
   output$contingency <- renderTable({
-    tab = with(data, table(Sex, Level))
+    tab = with(data, table(Sessions, categorie))
     round(tab/sum(tab), 3)
     tab
   })
