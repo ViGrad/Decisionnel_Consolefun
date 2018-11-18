@@ -39,7 +39,7 @@ class AnalyticFile:
 			indexOfId = 0
 			for csvRow in csvFile.rows:
 				idFromCsv = csvRow[indexOfId]
-				if idFromCsv == idFromAnalytics:
+				if str(idFromCsv) == str(idFromAnalytics):
 					for j in range(len(csvRow)):
 						bind = None
 						for b in binding:
@@ -49,14 +49,11 @@ class AnalyticFile:
 						
 						row = self.rows[i]
 						while(len(row) <= bind):
-							row.append("")
+							row.append(None)
 
 						self.rows[i][bind] = csvRow[j]
 		
 		self.columnsNames = columnsNames
-
-
-
 
 	def read(self, path, **kwargs):
 		header = kwargs.get("header")
@@ -70,6 +67,7 @@ class AnalyticFile:
 			columns_length = len(firstRow)
 			if first == True and header == True:
 						self.columnsNames = firstRow
+						self.columnsNames.append("genre")
 						first = False
 
 			for row in dataReader:
@@ -85,6 +83,7 @@ class AnalyticFile:
 					else:
 						newRow = row
 
+					newRow.append("Autre")
 					self.addRow(newRow)
 
 	def toCsv(self, fileName):

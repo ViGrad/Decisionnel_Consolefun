@@ -16,9 +16,9 @@ class KeroiFile:
 		header = kwargs.get("header")
 		write_header = kwargs.get("write_header")
 		columns = kwargs.get("columns")
-		categorie = kwargs.get("categorie")
-		if categorie is None:
-			categorie = ""
+		genre = kwargs.get("genre")
+		if genre is None:
+			genre = "Autre"
 
 		with open(path, 'rb') as csvfile:
 			dataReader = csv.reader(csvfile, delimiter=',', quotechar='"')
@@ -28,6 +28,7 @@ class KeroiFile:
 			columns_length = len(firstRow)
 			if first == True and header == True:
 					newRow = []
+					first = False
 
 					if columns is None:
 						newRow = firstRow
@@ -37,7 +38,7 @@ class KeroiFile:
 								newRow.append(int(firstRow[i].replace("\xc2\xa0", " ").replace(" ", "")))
 							except:
 								newRow.append(firstRow[i])
-					newRow.append("Categorie")
+					newRow.append("genre")
 					self.columnsNames = newRow
 
 			for row in dataReader:
@@ -53,7 +54,7 @@ class KeroiFile:
 							except:
 								newRow.append(row[i])
 
-					newRow.append(categorie)
+					newRow.append(genre)
 					self.addRow(newRow)
 
 	def toString(self):

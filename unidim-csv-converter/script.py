@@ -37,7 +37,7 @@ def transform(path, **kwargs):
 
 
 
-filePath = './consolefunpro.csv/output.csv'
+filePath = './ensemble bd analytics.csv/output.csv'
 header = True						# Indique si un header est present dans le fichier
 write_header = True		  # Indique si on ecrit un header dans le fichier de destination
 rows = [0, 25]						# Index des colonnes cibles

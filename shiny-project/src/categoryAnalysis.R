@@ -29,8 +29,6 @@ categoryAnalysis$ui <- fluidPage(
 )
 categoryAnalysis$server <- function(input, output){
   data <- read.csv("./inputs/ensemble bd analytics.csv", header=TRUE)
-  colnames(data) = c("Pages de destinations","Sessions","% nouvelles sessions", "Nouveaux utilisateurs", "Taux de rebond", "Pages/session", "Durée moyenne des sessions", "Visite (Taux de conversion – Objectif 1)", "Visite (Réalisations de l'objectif 1)", "Visite (valeur de l'objectif 1)", "idfichejeux", "titrejeux", "descriptif", "editeur", "developpeur", "type", "sortie", "sortie_jp", "sortie_us", "support", "icones", "classification","multijoueur","console","image","idforum","pub","videotest","tournoi","auteur","galerie","id","date","categorie","multi","titre","contenu","jouabilite","note_jouabilite","graphismes","note_graphismes","bandeson","note_bandeson","dureedevie","note_dureedevie","scenario","note_scenario","conclusion","note","plus","moins","selection","image1","image2","image3","lien","topic","anecdotes","etat","une","dossier","fiche", "source") 
-  
   # Données brutes
   # ----
   output$tableActivity <- renderDataTable({data})
@@ -64,22 +62,22 @@ categoryAnalysis$server <- function(input, output){
   
   # Bidimensionnel
   output$barplotBi <- renderPlot({
-    # Diagramme en barres entre les variables 'categorie' et 'Sessions'
-    ggplot(data, aes(x = categorie, fill = Sessions)) + geom_bar()
+    # Diagramme en barres entre les variables 'categorie' et 'genre'
+    ggplot(data, aes(x = categorie, fill = genre)) + geom_bar()
   })
   output$barplotProfils <- renderPlot({
-    # Diagramme de profils entre les variables 'categorie' et 'Sessions'
-    ggplot(data, aes(x = categorie, fill = Sessions)) + geom_bar(position = "fill")
+    # Diagramme de profils entre les variables 'categorie' et 'genre'
+    ggplot(data, aes(x = categorie, fill = genre)) + geom_bar(position = "fill")
   })
   output$barplotDodgeBi <- renderPlot({
-    # Diagramme de profils entre les variables 'categorie' et 'Sessions'
-    ggplot(data, aes(x = categorie, fill = Sessions)) + geom_bar(position = "dodge")
+    # Diagramme de profils entre les variables 'categorie' et 'genre'
+    ggplot(data, aes(x = categorie, fill = genre)) + geom_bar(position = "dodge")
   })
   
-  # Table de contingence entre 'Sessions' et 'categorie'
+  # Table de contingence entre 'genre' et 'categorie'
   # ----
   output$contingency <- renderTable({
-    tab = with(data, table(Sessions, categorie))
+    tab = with(data, table(genre, categorie))
     round(tab/sum(tab), 3)
     tab
   })
