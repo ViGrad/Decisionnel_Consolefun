@@ -1,4 +1,5 @@
 options(Encoding="UTF-8")
+library(data.table)
 library(shiny)
 eval(parse("src/introduction.R", encoding="UTF-8"))
 eval(parse("src/trafficAnalysis.R", encoding="UTF-8"))
