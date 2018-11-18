@@ -2,25 +2,45 @@ from csv_analytics_reader import AnalyticFile
 from csv_keroi_reader import KeroiFile
 
 analyticPath = './consolefunpro.csv/analytics.csv'
+analyticHeader = True
 filesInfos = [
-	['./consolefunpro.csv/keroi_fichejeux.csv', "/jeuxvideo/detail/"],
-	['./consolefunpro.csv/keroi_tests.csv', "/testsjeux/detail/"],
-	['./consolefunpro.csv/keroi_news.csv', "/actualites/detail/"]
+	{
+		'path': './consolefunpro.csv/keroi_fichejeux.csv', 
+		'pre': "/jeuxvideo/detail/",
+		'columns': [0],
+		'header': True,
+		'categorie': "Fiche jeux"
+	},
+	{
+		'path': './consolefunpro.csv/keroi_tests.csv', 
+		'pre': "/testsjeux/detail/",
+		'columns': [0],
+		'header': True,
+		'categorie': "Test"
+	},
+	{
+		'path': './consolefunpro.csv/keroi_news.csv', 
+		'pre': "/actualites/detail/",
+		'columns': [0],
+		'header': True,
+		'categorie': "News"
+	}
 ]
 
-header = True						# Indique si un header est present dans le fichier
-
 analyticCsv = AnalyticFile("analytics")
-analyticCsv.read(analyticPath, header = header)
+analyticCsv.read(analyticPath, header = analyticHeader)
 
 for infos in filesInfos:
-	path = infos[0]
-	pre = infos[1]
+	path = infos['path']
+	pre = infos['pre']
+	header = infos['header']
+	columns = infos['columns']
+	categorie = infos['categorie']
 
 	splitted = path.split("/")
 	name = splitted[len(splitted) - 1]
 	csv = KeroiFile(name)
-	csv.read(path, header = header)
+	csv.read(path, header = header, columns = columns, categorie = categorie)
 	analyticCsv.mergeWithKeroi(csv, pre)
 
 

@@ -34,7 +34,6 @@ class AnalyticFile:
 			else:
 				binding.append([i, index])
 
-			
 		for i in range(len(self.rows)):
 			idFromAnalytics = self.rows[i][indexOfUrl].replace(fileType, "").split("/")[0]
 			indexOfId = 0

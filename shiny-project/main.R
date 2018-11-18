@@ -3,6 +3,7 @@ library(shiny)
 eval(parse("src/introduction.R", encoding="UTF-8"))
 eval(parse("src/trafficAnalysis.R", encoding="UTF-8"))
 eval(parse("src/quantitative.R", encoding="UTF-8"))
+eval(parse("src/categoryAnalysis.R", encoding="UTF-8"))
 
 
 # 2. Variable quantitative
@@ -10,7 +11,8 @@ eval(parse("src/quantitative.R", encoding="UTF-8"))
 ui <- navbarPage("Analyse Console Fun",
     tabPanel("Introduction", introduction$ui),
     tabPanel("Analyse du traffic", trafficAnalysis$ui),
-    tabPanel("Variable quantitative", quantitative$ui)
+    tabPanel("Variable quantitative", quantitative$ui),
+    tabPanel("Analyse de l'activité", categoryAnalysis$ui)
   )
 
   server <- function(input, output){
@@ -20,6 +22,8 @@ ui <- navbarPage("Analyse Console Fun",
     trafficAnalysis$server(input, output)
     # 3. Analyse quantitative
     quantitative$server(input, output)
+    # 4. Analyse de catégories
+    categoryAnalysis$server(input, output)
   }
 
 shinyApp(ui = ui, server = server)

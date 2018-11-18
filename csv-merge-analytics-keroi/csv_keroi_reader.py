@@ -15,7 +15,10 @@ class KeroiFile:
 	def read(self, path, **kwargs):
 		header = kwargs.get("header")
 		write_header = kwargs.get("write_header")
-		rows = kwargs.get("rows")
+		columns = kwargs.get("columns")
+		categorie = kwargs.get("categorie")
+		if categorie is None:
+			categorie = ""
 
 		with open(path, 'rb') as csvfile:
 			dataReader = csv.reader(csvfile, delimiter=',', quotechar='"')
@@ -24,22 +27,33 @@ class KeroiFile:
 			firstRow = next(dataReader)
 			columns_length = len(firstRow)
 			if first == True and header == True:
-						self.columnsNames = firstRow
-						first = False
+					newRow = []
+
+					if columns is None:
+						newRow = firstRow
+					else:
+						for i in columns:
+							try:
+								newRow.append(int(firstRow[i].replace("\xc2\xa0", " ").replace(" ", "")))
+							except:
+								newRow.append(firstRow[i])
+					newRow.append("Categorie")
+					self.columnsNames = newRow
 
 			for row in dataReader:
 				if len(row) == columns_length:
 					newRow = []
 
-					if rows:
-						for i in rows:
+					if columns is None:
+						newRow = row
+					else:
+						for i in columns:
 							try:
 								newRow.append(int(row[i].replace("\xc2\xa0", " ").replace(" ", "")))
 							except:
 								newRow.append(row[i])
-					else:
-						newRow = row
 
+					newRow.append(categorie)
 					self.addRow(newRow)
 
 	def toString(self):
@@ -48,5 +62,6 @@ class KeroiFile:
 		string += ",".join((str(x) for x in self.columnsNames))
 		for row in self.rows:
 			string += ",".join((str(x) for x in row))
+			string += "\n"
 
 		return string
