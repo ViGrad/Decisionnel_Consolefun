@@ -28,7 +28,8 @@ categoryAnalysis$ui <- fluidPage(
   , style = "font-size: 75%"
 )
 categoryAnalysis$server <- function(input, output){
-  data <- read.csv("./inputs/students.csv", header = TRUE)
+  data <- fread("./inputs/ensemble bd analytics.csv", header=TRUE)
+  colnames(data) = c("Pages de destinations","Sessions","% nouvelles sessions", "Nouveaux utilisateurs", "Taux de rebond", "Pages/session", "Durée moyenne des sessions", "Visite (Taux de conversion – Objectif 1)", "Visite (Réalisations de l'objectif 1)", "Visite (valeur de l'objectif 1)", "idfichejeux", "titrejeux", "descriptif", "editeur", "developpeur", "type", "sortie", "sortie_jp", "sortie_us", "support", "icones", "classification","multijoueur","console","image","idforum","pub","videotest","tournoi","auteur","galerie","id","date","categorie","multi","titre","contenu","jouabilite","note_jouabilite","graphismes","note_graphismes","bandeson","note_bandeson","dureedevie","note_dureedevie","scenario","note_scenario","conclusion","note","plus","moins","selection","image1","image2","image3","lien","topic","anecdotes","etat","une","dossier","fiche", "source") 
   
   # Données brutes
   # ----
