@@ -4,12 +4,11 @@ library(shiny)
 eval(parse("src/introduction.R", encoding="UTF-8"))
 eval(parse("src/traficAnalysis.R", encoding="UTF-8"))
 eval(parse("src/categoryAnalysis.R", encoding="UTF-8"))
-eval(parse("src/conclusions.R", encoding="UTF-8"))
 
 ui <- navbarPage("Analyse Console Fun",
     tabPanel("Introduction", introduction$ui),
     tabPanel("Analyse du trafic", traficAnalysis$ui),
-    tabPanel("Analyse de l'activité", categoryAnalysis$ui),
+    tabPanel("Analyse de l'activité", categoryAnalysis$ui)
   )
 
   server <- function(input, output){
