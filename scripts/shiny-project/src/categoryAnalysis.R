@@ -1,7 +1,8 @@
 library(shiny)
 library(ggplot2)
+library(markdown)
 
-# 4. Analyse de catégories
+# 3. Analyse de catégories
 categoryAnalysis <- list()
 categoryAnalysis$ui <- fluidPage(
   tabsetPanel(
@@ -23,7 +24,8 @@ categoryAnalysis$ui <- fluidPage(
                column(6, tableOutput("contingency"))
              )
     ),
-    tabPanel("Table", dataTableOutput("tableActivity"), style = "font-size: 85%")
+    tabPanel("Table", dataTableOutput("tableActivity"), style = "font-size: 85%"),
+    tabPanel("Analyse", includeMarkdown("./inputs/categoryAnalysis.md"))
   )
   , style = "font-size: 75%"
 )

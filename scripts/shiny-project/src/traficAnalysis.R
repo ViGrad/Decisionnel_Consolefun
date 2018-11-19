@@ -1,6 +1,7 @@
-# 1. Analyse du traffic
+library(markdown)
 
-getTrafficAnalysis <- function() {
+# 2. Analyse du traffic
+getTraficAnalysis <- function() {
   # ---- constantes
   RV <- reactiveValues(hist_isFreq = TRUE, 
                        hist_yLabel = "Effectifs", 
@@ -91,19 +92,20 @@ getTrafficAnalysis <- function() {
   }
   
   
-  trafficAnalysis <- list()
-  trafficAnalysis[["ui"]] <- tabsetPanel(
+  traficAnalysis <- list()
+  traficAnalysis[["ui"]] <- tabsetPanel(
     newUsersAnalysis$ui,
     viewsAnalysis$ui,
-    activeUsersAnalysis$ui
+    activeUsersAnalysis$ui,
+    tabPanel("Analyse", includeMarkdown("./inputs/traficAnalysis.md"))
   )
-  trafficAnalysis[["server"]] <- function(input, output) {
+  traficAnalysis[["server"]] <- function(input, output) {
     newUsersAnalysis$server(input, output)
     viewsAnalysis$server(input, output)
     activeUsersAnalysis$server(input, output)
   }
   
-  return(trafficAnalysis)
+  return(traficAnalysis)
 }
 
-trafficAnalysis <- getTrafficAnalysis()
+traficAnalysis <- getTraficAnalysis()
