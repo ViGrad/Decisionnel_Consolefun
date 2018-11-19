@@ -10,7 +10,6 @@ ui <- navbarPage("Analyse Console Fun",
     tabPanel("Introduction", introduction$ui),
     tabPanel("Analyse du trafic", traficAnalysis$ui),
     tabPanel("Analyse de l'activité", categoryAnalysis$ui),
-    tabPanel("Constat", conclusion$ui)
   )
 
   server <- function(input, output){
@@ -20,8 +19,6 @@ ui <- navbarPage("Analyse Console Fun",
     traficAnalysis$server(input, output)
     # 3. Analyse de catégories
     categoryAnalysis$server(input, output)
-    # 4. Conclusion
-    conclusion$server(input, output)
   }
 
 shinyApp(ui = ui, server = server)
